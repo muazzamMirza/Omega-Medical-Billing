@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+<body>
+    <h2 style="margin-top: 5%;">{{ message }}</h2>
+    <a href="{% url 'upload_pdf' %}">Upload Another PDF</a>
+</body>
+{% endblock %}

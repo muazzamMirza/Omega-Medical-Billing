@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Statement Retrieval</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/b930ae5fbc.js" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="icon" type="image/png" href="{% static 'images/favicon.jpg' %}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            
+        }
+        .card {
+            border-radius: 12px;
+            padding: 30px;
+            background: white;
+            width: 80%;
+            max-width: 700px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 200%;
+        }
+        .form-control {
+            border-radius: 8px;
+            height: 45px;
+        }
+        .btn-search {
+            background-color: #0d6efd;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            width: 100%;
+            padding: 12px;
+        }
+        .btn-search:hover {
+            background-color: #0b5ed7;
+        }
+        .icon {
+            font-size: 50px;
+            color: #0d6efd;
+        }
+        .table-container {
+            background-color: #0b5ed7;
+            margin-top: 20px;
+            border-radius: 10px;
+            background: #f8f9fa;
+            padding: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .table th {
+            text-transform: uppercase;
+            font-size: 12px;
+            color: #777;
+        }
+        .table td {
+            font-size: 14px;
+        }
+        .action-icons a {
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 16px;
+        }
+        .action-icons a.view {
+            color: #0d6efd;
+        }
+        .action-icons a.download {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <div class="card">
+                <i class="fa fa-file-text icon"></i>
+                <h2 class="mt-2"><strong>Statement Retrieval</strong></h2>
+                <p>Search and access your patient statements</p>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <label class="form-label">Last Name</label>
+                            <input type="text" class="form-control" name="last_name" required value="{{ name }}" placeholder="Joxx">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Birth Year</label>
+                            <input type="text" class="form-control" name="birth_year" required value="{{ year }}" placeholder="19xx">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Phone Number <span class="text-danger">(Required)</span></label>
+                            <input type="text" class="form-control" name="cell_number" required value="{{ number }}" placeholder="xxxxxxxxxx (10 Digits)">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-search mt-3">
+                        <i class="fa fa-search"></i> Search Statements
+                    </button>
+                </form>
+            </div>
+
+            {% if pdf_file %}
+            <div class="table-container mt-4" style="text-align: center;">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th>File Name</th>
+                            
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pdf in pdf_file %}
+                        <tr>
+                            <td>{{ pdf.pdf_file }}</td>
+                            
+                            <td>{{ pdf.created_at }}</td>
+                            <td class="action-icons">
+                                <a href="{{ pdf.pdf_file.url }}" target="_blank" class="view"><i class="fa fa-eye"></i> View</a>
+                                <a href="{{ pdf.pdf_file.url }}" download class="download"><i class="fa fa-download"></i> Download</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

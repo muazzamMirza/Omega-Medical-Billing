@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center;  }
+        input, button { padding: 10px; margin: 10px; }
+    </style>
+</head>
+<body> 
+    <h2 style="margin-top: 5%;">Admin: Upload Main PDF</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="pdf_file" required>
+        <button type="submit">Upload & Process</button>
+    </form>
+</body>
+{% endblock %}
+
