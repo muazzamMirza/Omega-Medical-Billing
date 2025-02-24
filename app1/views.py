@@ -252,11 +252,12 @@ def extract_patient_info(pdf_path):
 
                 client = Client(account_sid,aut_token)
                 message = client.messages.create(
-                    body = f"Hello {patient_name} your total bill is $ {payment_due} for the doctor {rendering_physician} click here to view your statement https://consistent-danyette-nmbcs-e33af721.koyeb.app/ ",
+                    body = f"Hello {patient_name} your total bill amount is $ {payment_due} for the doctor {rendering_physician} click Here to check details https://shorturl.at/Xj4uw",
                     from_=twilio_number,
                     to=target_number
 
                 )
                 print(message.body)
-                # data.append([patient_name, phone, dob, payment_due, rendering_physician])
-    # return HttpResponse('done')
+                break
+                
+               
