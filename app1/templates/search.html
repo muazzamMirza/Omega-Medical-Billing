@@ -137,5 +137,20 @@
             {% endif %}
         </div>
     </div>
+    {% if error %}
+    <div id="alertBox" class="alert alert-danger text-center" role="alert" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 1050; display: block;">
+        
+            {{ error }}
+        
+    </div>
+    
+    <script>
+        // Hide alert automatically after 2 seconds
+        setTimeout(function() {
+            document.getElementById('alertBox').style.display = 'none';
+        }, 2000);
+    </script>
+{% endif %}
+
 </body>
 </html>

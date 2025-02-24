@@ -15,6 +15,22 @@
         <input type="file" name="pdf_file" required>
         <button type="submit">Upload & Process</button>
     </form>
+    {% csrf_token %}
+    <table class="table table-bordered">
+        <thead>
+         
+            
+            
+            <tr>
+                
+                <td>Number of Visitors</td>
+                <td>{{ counter }}</td>
+                <!-- <td>{{ item.email }}</td> -->
+            </tr>
+            
+        </thead>
+        
+    </table>
 </body>
 {% endblock %}
 

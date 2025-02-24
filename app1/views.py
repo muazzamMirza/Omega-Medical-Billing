@@ -60,8 +60,8 @@ def upload_pdf(request):
                 )
 
         return render(request, "upload_success.html", {"message": "✅ PDF processed successfully!"})
-    
-    return render(request, "upload.html")
+    a=Searches.objects.last()
+    return render(request, "upload.html",{"counter":a.count})
 
 # def search_patient(request):
 #     """Patient Searches for Their PDF"""
@@ -85,7 +85,8 @@ def upload_pdf(request):
 #         return render(request, "search.html")
 import fitz  # PyMuPDF
 from django.shortcuts import render
-from .models import ProcessedPage
+from .models import *
+from django.http import JsonResponse
 @csrf_exempt
 def search_text_in_pdf(pdf_path, last_name, birth_year):
     """Checks if a PDF contains the last name and birth year (case-insensitive)."""
@@ -102,7 +103,27 @@ def search_text_in_pdf(pdf_path, last_name, birth_year):
 def search_patient(request):
     """Patient Searches for Their PDF"""
     pdf_files = []
-    found_match = False  # Track if any PDF contains the last name & birth year
+    found_match = False 
+     # Track if any PDF contains the last name & birth year
+    # try:
+    #     count=Searches.objects.last()
+    #     count.count=count.count+1
+    #     count.save()
+    # except:
+    #     count=Searches.objects.create(count=1)
+    #     count.save()
+    
+
+    # x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    # if x_forwarded_for:
+    #     ip = x_forwarded_for.split(',')[0]  # Extract first IP if multiple exist
+    #     print(f'ip from if {ip}')
+        
+    # else:
+    #     ip = request.META.get('REMOTE_ADDR')  # Get direct IP
+    #     print(f'ip from else {ip}')
+
+
 
     if request.method == "POST":
         last_name = request.POST.get("last_name", "").strip()
@@ -125,9 +146,23 @@ def search_patient(request):
         # If we found a match in any PDF, return all PDFs
         if found_match:
             pdf_files = [record for record in pdf_records]
+            try:
+                count=Searches.objects.last()
+                count.count=count.count+1
+                count.save()
+            except:
+                count=Searches.objects.create(count=1)
+                count.save()
             return render(request, "search.html", {"pdf_file": pdf_files,"name":last_name,"year":birth_year,"number":cell_number})
-
-        return render(request, "search.html", {"error": "No matching records found.","name":last_name,"year":birth_year,"number":cell_number})
+        else:
+            try:
+                count=Searches.objects.last()
+                count.count=count.count+1
+                count.save()
+            except:
+                count=Searches.objects.create(count=1)
+                count.save()
+            return render(request, "search.html", {"error": "No matching records found.","name":last_name,"year":birth_year,"number":cell_number})
 
     return render(request, "search.html")
 @csrf_exempt
